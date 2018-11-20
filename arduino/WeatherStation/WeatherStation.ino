@@ -30,6 +30,8 @@ void setup() {
 }
 
 char cmd_buffer[100];
+char temp_buffer[6];
+char hum_buffer[6];
 
 void loop() {
   float hum = dht.readHumidity();
@@ -44,7 +46,11 @@ void loop() {
   else {
       printTemperature(temp);
       printHumidity(hum);
-      sprintf(cmd_buffer, "python sendMeasurements.py --temp %d --hum %d", (int)temp, (int)hum);
+      // Arduino sprintf does not support %f due to performance reasons, so have to
+      // convert the float value into a string and use that with sprintf()
+      dtostrf(temp, 4, 2, temp_buffer);
+      dtostrf(hum, 4, 2, hum_buffer);
+      sprintf(cmd_buffer, "python sendMeasurements.py --temp %s --hum %s", temp_buffer, hum_buffer);
       Process p;
       Serial.println("Sending sensor data to UDP server...");
       p.runShellCommand(cmd_buffer);
