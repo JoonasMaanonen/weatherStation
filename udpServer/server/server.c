@@ -10,6 +10,10 @@
 #include "errorHandler.h"
 #include "currTime.h"
 
+/*
+ * TODO: Make this into daemon so it can run on the background
+ */
+
 #define MAXBUFLEN 100
 
 int main(int argc, char *argv[]){
