@@ -5,8 +5,8 @@
 #define DHTPIN A0
 #define DHTTYPE DHT22   // DHT 22  (AM2302), TempHum Pro
 
-// 10 minutes at first
-#define DELAY 600000
+// 1 hour delay
+#define DELAY 3600000
 DHT dht(DHTPIN, DHTTYPE);
 
 void printTemperature(float temp){

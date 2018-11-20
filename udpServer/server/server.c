@@ -7,6 +7,9 @@
 #include <netdb.h>
 #include <syslog.h>
 #include <time.h>
+#include <signal.h>
+#include <syslog.h>
+#include <sys/stat.h>
 #include "errorHandler.h"
 #include "currTime.h"
 
@@ -16,12 +19,42 @@
 
 #define MAXBUFLEN 100
 
+static void create_daemon_process(){
+    pid_t pid;
+
+    // Create a fork off the parent process
+    pid = fork();
+
+    if(pid < 0){
+        errExit("fork");
+    }
+
+    // Terminate the parent process
+    if(pid > 0){
+        exit(EXIT_SUCCESS);
+    }
+
+    // The child process becomes session leader
+    if(setsid() < 0){
+        exit(EXIT_FAILURE);
+    }
+
+    // TODO: Implement a working signal handler.
+    //       Now this ignores incoming signals.
+    signal(SIGCHLD, SIG_IGN);
+    signal(SIGHUP, SIG_IGN);
+}
+
 int main(int argc, char *argv[]){
 
     if(argc != 3){
         fprintf(stderr, "usage: %s hostname servicePort\n", argv[0]);
         exit(EXIT_FAILURE);
     }
+
+    // Create a daemon of this process
+    create_daemon_process();
+    syslog(LOG_NOTICE, "[WeatherStation]: daemon started.");
 
     // During debugging
     //setbuf(stdout, NULL);
@@ -62,7 +95,8 @@ int main(int argc, char *argv[]){
 
     freeaddrinfo(servinfo);
 
-    printf("Waiting for packets...\n");
+    //printf("Waiting for packets...\n");
+    syslog(LOG_NOTICE, "[WeatherStation]: Waiting for packets...");
     struct sockaddr_storage clientAddr;
     char buf[MAXBUFLEN];
     for(;;){
@@ -73,8 +107,9 @@ int main(int argc, char *argv[]){
             errExit("recvfrom");
         }
         else{
-            printf("Number of bytes read: %d\n", numRead);
-            printf("%s\n", buf);
+            //printf("Number of bytes read: %ld\n", numRead);
+            //printf("%s\n", buf);
+            syslog(LOG_NOTICE, "[WeatherStation]: Got a UDP message");
             FILE *fptr;
             fptr = fopen("measurements.csv", "a");
             if(fptr == NULL){
@@ -82,8 +117,10 @@ int main(int argc, char *argv[]){
             }
             fprintf(fptr, "%s\n" , buf);
             fclose(fptr);
-
         }
     }
+    syslog(LOG_NOTICE, "[WeatherStation]: daemon was terminated!");
+    closelog();
+    return EXIT_SUCCESS;
 }
 
