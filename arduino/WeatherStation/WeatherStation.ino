@@ -30,8 +30,8 @@ void setup() {
 }
 
 char cmd_buffer[100];
-char temp_buffer[6];
-char hum_buffer[6];
+char temp_buffer[7];
+char hum_buffer[7];
 
 void loop() {
   float hum = dht.readHumidity();
@@ -50,6 +50,8 @@ void loop() {
       // convert the float value into a string and use that with sprintf()
       dtostrf(temp, 4, 2, temp_buffer);
       dtostrf(hum, 4, 2, hum_buffer);
+      temp_buffer[6] = "\0";
+      hum_buffer[6] = "\0";
       sprintf(cmd_buffer, "python sendMeasurements.py --temp %s --hum %s", temp_buffer, hum_buffer);
       Process p;
       Serial.println("Sending sensor data to UDP server...");

@@ -13,8 +13,6 @@ args = parser.parse_args()
 # Create a separate config file so we can put this in GIT
 with open("config.json") as f:
     config_data = json.load(f)
-    
-    
 
 dt = datetime.now()
 DATE = dt.strftime("%Y-%m-%d %H:%M")
