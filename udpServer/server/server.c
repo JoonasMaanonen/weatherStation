@@ -109,7 +109,7 @@ int main(int argc, char *argv[]){
         else{
             //printf("Number of bytes read: %ld\n", numRead);
             //printf("%s\n", buf);
-            syslog(LOG_NOTICE, "[WeatherStation]: Got a UDP message");
+            syslog(LOG_NOTICE, "[WeatherStation]: Got a UDP message: %s", buf);
             FILE *fptr;
             fptr = fopen("measurements.csv", "a");
             if(fptr == NULL){
