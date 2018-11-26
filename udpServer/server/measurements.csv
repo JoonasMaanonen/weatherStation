@@ -1,4 +1,4 @@
-Date            ,   Sensor        ,Temperature(C),  Humidity(%)
+Date,Sensor,Temperature(C),Humidity(%)
 2018-11-21 12:23, Otaniemi (SMT12), 0.60, 84.800
 2018-11-21 13:23, Otaniemi (SMT12), 0.50, 84.500
 2018-11-21 14:23, Otaniemi (SMT12), 0.70, 84.900
