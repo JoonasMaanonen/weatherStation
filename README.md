@@ -2,7 +2,7 @@
 This repository has instructions on how to create a basic home automation system. The system can measure the temperature and humidity of any place you want.  
 
 ## Why I did this project
-I attended a course(Prediction and Time Series Analysis) in Aalto University, where a very inspiring lecturer (Pauliina Ilmonen) mentioned temperature as an example about a time series. Therefore,  I figured I'd make a system where I could get some real time series data and then analyze it using the techniques learned on the course.
+I attended the course(Prediction and Time Series Analysis) in Aalto University, where a very inspiring lecturer (Pauliina Ilmonen) mentioned temperature as an example about a time series. Therefore,  I figured I'd make a system where I could get some real time series data and then analyze it using the techniques learned on the course.
 
 I happened to have an old Linux laptop and Arduino Yun lying around, So I hacked around for a weekend and came up with this simple system.
 
@@ -26,19 +26,19 @@ I happened to have an old Linux laptop and Arduino Yun lying around, So I hacked
         "port": "YOUR LINUX SERVER PORT"
   }
 ```
-7. Make sure you have [the server code](udpServer) in somewhere in your Linux server where you can run it safely.
+7. Make sure you have [the server code](udpServer) somewhere in your Linux server where you can run it safely.
 8. Compile the server code and create measurements.csv file for the measurements in the [server directory](udpServer/server)
 9. Run the UDP server by ``` ./server hostname port ```
-10. Check if the daemon started correctly by checking the syslog file ```/usr/log/syslog```. You should find log print: ```[WeatherStation]: daemon started```.
-11. Now we have our UDP server running, where we store our measurements.
+10. Check if the daemon started correctly by checking the syslog file ```/usr/log/syslog```. You should find a log print: ```[WeatherStation]: daemon started```.
+11. Now we have our UDP server running, where we store our weather measurements.
 12. Connect the DHT sensor to the correct PIN of the Arduino board that is defined in the [code](arduino/WeatherStation/WeeatherStation.ino).
 13. Upload the [arduino code](arduino/WeatherStation/WeatherStation.ino) to the Arduino Yun.
 14. Make sure the code is running properly by checking the Arduino Serial log.
 15. Now you should have a working system that sends measurements from the Arduino to the central Linux server.
-16. You can make sure that the UDP packets are arriving by again looking at the syslog of the linux server. There should be some prints that there that indicate that the message has arrived.
+16. You can make sure that the UDP packets are arriving by again looking at the syslog of the linux server. There should be some prints there that indicate that the message has arrived.
 
 
 ## Improvements 
+- Rest API to query the measurements.
+- Website to showcase the data online, by leveraging the REST API.
 - Database service where to store the measurements data.
-- Website to showcase the data online.
-- Rest API to query the measurements 
