@@ -13,10 +13,6 @@
 #include "errorHandler.h"
 #include "currTime.h"
 
-/*
- * TODO: Make this into daemon so it can run on the background
- */
-
 #define MAXBUFLEN 100
 
 static void create_daemon_process(){
@@ -56,9 +52,6 @@ int main(int argc, char *argv[]){
     create_daemon_process();
     syslog(LOG_NOTICE, "[WeatherStation]: daemon started.");
 
-    // During debugging
-    //setbuf(stdout, NULL);
-
     struct addrinfo hints;
     memset(&hints, 0, sizeof(hints));
     hints.ai_family = AF_INET; // Ipv4
@@ -95,7 +88,6 @@ int main(int argc, char *argv[]){
 
     freeaddrinfo(servinfo);
 
-    //printf("Waiting for packets...\n");
     syslog(LOG_NOTICE, "[WeatherStation]: Waiting for packets...");
     struct sockaddr_storage clientAddr;
     char buf[MAXBUFLEN];
@@ -107,8 +99,6 @@ int main(int argc, char *argv[]){
             errExit("recvfrom");
         }
         else{
-            //printf("Number of bytes read: %ld\n", numRead);
-            //printf("%s\n", buf);
             syslog(LOG_NOTICE, "[WeatherStation]: Got a UDP message: %s", buf);
             FILE *fptr;
             fptr = fopen("measurements.csv", "a");
