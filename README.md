@@ -11,6 +11,12 @@ I happened to have an old Linux laptop and Arduino Yun lying around, So I hacked
 - DHT 22  (AM2302), TempHum Pro 
 - Linux Server
 
+## Overall architecture
+ - Arduino measures the temperature and humidity every 1 hour.
+ - After measuring it will instantly send the data via UDP to the Linux server
+ - That server is running a daemon that listens for incoming UDP messages.
+ - When the daemon receives a UDP message it writes it to a csv file that serves as our 'database'.
+
 ## Instructions 
 1. Configure Arduino Yun WiFi according to these instructions:
     - https://www.arduino.cc/en/Guide/ArduinoYun
